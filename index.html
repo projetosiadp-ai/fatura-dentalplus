@@ -154,7 +154,7 @@
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center; /* Centralizado horizontalmente */
             position: relative;
             overflow: hidden;
         }
@@ -163,22 +163,11 @@
             font-family: monospace;
             font-size: 13px;
             color: var(--text-secondary);
-            text-align: left;
+            text-align: center; /* Centraliza o texto do código */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            width: 80%;
-        }
-
-        .code-badge {
-            background: rgba(0, 145, 255, 0.1);
-            color: var(--pix-color);
-            border: 1px solid rgba(0, 145, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
+            width: 100%; /* Ocupa 100% da largura, pois a etiqueta foi removida */
         }
 
         /* Copy Button */
@@ -525,7 +514,6 @@
         <!-- Code preview (shows snippet to user for trust) -->
         <div class="code-box">
             <span class="code-text" id="pixPreview">Carregando código...</span>
-            <span class="code-badge">PIX Copia e Cola</span>
         </div>
 
         <!-- Copy Action Button -->
