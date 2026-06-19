@@ -20,6 +20,8 @@
             --text-primary: #ffffff;
             --text-secondary: #a2b2c8;
             --success-color: #38a169;
+            --warning-color: #dd6b20;
+            --tab-inactive: rgba(255, 255, 255, 0.4);
         }
 
         * {
@@ -39,10 +41,10 @@
             padding: 20px;
             overflow-x: hidden;
             position: relative;
-            -webkit-tap-highlight-color: transparent; /* Remove feedback cinza no Safari iOS */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Background glow wrapper that prevents scrollbar expansion */
+        /* Background glow wrapper */
         .bg-glow-wrapper {
             position: absolute;
             top: 0;
@@ -54,11 +56,10 @@
             z-index: 0;
         }
 
-        /* Decorative background elements matching Dental Plus branding */
         .bg-glow-1 {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(0, 145, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
             top: -100px;
@@ -68,31 +69,38 @@
 
         .bg-glow-2 {
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 550px;
+            height: 550px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(3, 20, 60, 0.25) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(3, 20, 60, 0.3) 0%, rgba(0,0,0,0) 70%);
             bottom: -150px;
             right: -100px;
             pointer-events: none;
         }
 
-        /* Container Card */
+        /* Container Card with Glassmorphism 2.0 */
         .container {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
             border: 1px solid var(--card-border);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border-radius: 24px;
             width: 100%;
             max-width: 480px;
-            padding: 40px 30px 24px 30px; /* Reduzido o padding inferior de 40px para 24px */
+            padding: 40px 30px 24px 30px;
             text-align: center;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             z-index: 1;
             position: relative;
             transform: translateY(0);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+        }
+
+        .container:hover {
+            border-color: rgba(0, 145, 255, 0.2);
+            box-shadow: 0 30px 60px rgba(0, 145, 255, 0.1), 0 15px 35px rgba(0, 0, 0, 0.6);
+            transform: translateY(-2px);
         }
 
         @keyframes fadeIn {
@@ -129,7 +137,6 @@
             50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(0, 145, 255, 0.6); }
         }
 
-        /* Typography */
         h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 24px;
@@ -139,38 +146,153 @@
         }
 
         p.subtitle {
-            font-size: 15px;
+            font-size: 14.5px;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
-        /* Code Preview Area */
+        /* Tab Switcher (Segmented Control) */
+        .tab-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--tab-inactive);
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+        }
+
+        .tab-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: var(--pix-color);
+            border-radius: 8px;
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 145, 255, 0.3);
+        }
+
+        /* Code Preview Area with Custom Scrollbar */
         .code-box {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centralizado horizontalmente */
+            justify-content: flex-start;
             position: relative;
-            overflow: hidden;
+            overflow-x: auto;
+            white-space: nowrap;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            scrollbar-width: thin;
+            scrollbar-color: var(--pix-color) rgba(0,0,0,0.3);
+        }
+
+        .code-box:hover {
+            border-color: rgba(0, 145, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 145, 255, 0.1);
+        }
+
+        .code-box::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .code-box::-webkit-scrollbar-thumb {
+            background: var(--pix-color);
+            border-radius: 4px;
+        }
+
+        .code-box::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
         }
 
         .code-text {
             font-family: monospace;
             font-size: 13px;
             color: var(--text-secondary);
-            text-align: center; /* Centraliza o texto do código */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%; /* Ocupa 100% da largura, pois a etiqueta foi removida */
+            width: 100%;
         }
 
-        /* Copy Button */
+        /* Tooltip hint inside codebox */
+        .code-hint {
+            position: absolute;
+            bottom: 2px;
+            right: 10px;
+            font-size: 9px;
+            color: rgba(0, 145, 255, 0.7);
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        /* QR Code Container with Loading Skeleton */
+        .qr-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 228px;
+            position: relative;
+        }
+
+        .skeleton {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 75%);
+            background-size: 200% 100%;
+            animation: loadingSkeleton 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loadingSkeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .qr-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 8px;
+            display: none;
+            animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Primary and Secondary Buttons */
         .btn-copy {
             background: var(--pix-color);
             color: #ffffff;
@@ -197,7 +319,6 @@
             box-shadow: 0 4px 10px rgba(0, 145, 255, 0.2);
         }
 
-        /* Pulsing hint icon on load if not copied */
         .btn-copy.pulse {
             animation: buttonPulse 2s infinite;
         }
@@ -208,11 +329,17 @@
             100% { box-shadow: 0 0 0 0 rgba(0, 145, 255, 0); }
         }
 
-        /* Success button state */
         .btn-copy.success {
             background: var(--success-color);
             color: white;
             box-shadow: 0 6px 20px rgba(56, 161, 105, 0.3);
+        }
+
+        .btn-copy.secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+            color: var(--text-primary);
         }
 
         .btn-copy svg {
@@ -222,7 +349,28 @@
             transition: transform 0.3s ease;
         }
 
-        /* Steps Section CSS */
+        /* Keyboard Focus Outline */
+        .btn-copy:focus-visible, .tab-btn:focus-visible, .code-box:focus-visible {
+            outline: 2px solid var(--pix-color);
+            outline-offset: 3px;
+        }
+
+        /* Error/Invalid State styles */
+        .error-message {
+            color: #ff6b6b;
+            font-size: 13.5px;
+            margin: 15px auto 0 auto;
+            line-height: 1.5;
+            text-align: center;
+            max-width: 90%;
+            display: none;
+            background: rgba(255, 107, 107, 0.08);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        /* Steps Section Grid Layout */
         .steps-container {
             margin-top: 35px;
             text-align: left;
@@ -244,14 +392,15 @@
             margin-bottom: 20px;
         }
 
+        .steps-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
         .step-item {
             display: flex;
             gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .step-item:last-child {
-            margin-bottom: 0; /* Remove a margem inferior do último passo para reduzir espaçamento */
         }
 
         .step-number {
@@ -287,6 +436,14 @@
             font-size: 12px;
             color: var(--text-secondary);
             line-height: 1.42;
+        }
+
+        /* Footer Info */
+        .footer-info {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
 
         /* Toast Notification */
@@ -352,49 +509,43 @@
             line-height: 1.4;
         }
 
-        /* Error/Invalid State styles - Centered with balanced margins */
-        .error-message {
-            color: #ff6b6b;
-            font-size: 13.5px;
-            margin: 15px auto 0 auto; /* Ajustado para dar bom respiro sob o botão */
-            line-height: 1.5;
-            text-align: center;
-            max-width: 90%;
-            display: none;
-        }
-
-        /* Footer Info */
-        .footer-info {
-            margin-top: 18px; /* Reduzido de 25px para 18px */
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .footer-info a {
-            color: var(--pix-color);
-            text-decoration: none;
-        }
-
-        /* Media query for desktop hover animations only, preventing hover stickiness on touch devices */
+        /* Desktop Hover Optimization */
         @media (hover: hover) {
             .btn-copy:hover {
                 background: var(--pix-hover);
                 transform: translateY(-2px);
                 box-shadow: 0 8px 25px rgba(0, 145, 255, 0.45);
             }
+            .btn-copy.secondary:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.15);
+                box-shadow: none;
+                transform: translateY(-2px);
+            }
             .btn-copy:hover svg {
                 transform: scale(1.1);
             }
-            .footer-info a:hover {
-                text-decoration: underline;
+        }
+
+        /* Grid transition on Desktop screen sizes */
+        @media (min-width: 768px) {
+            .steps-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .step-item {
+                background: rgba(255, 255, 255, 0.01);
+                border: 1px solid rgba(255, 255, 255, 0.03);
+                padding: 16px;
+                border-radius: 12px;
             }
         }
 
         /* Responsive design for tablets and mobile devices */
         @media (max-width: 480px) {
             .container {
-                padding: 30px 20px 18px 20px; /* Reduzido o padding inferior de 30px para 18px */
+                padding: 30px 20px 18px 20px;
                 border-radius: 20px;
                 margin: 10px;
             }
@@ -409,14 +560,14 @@
             }
 
             p.subtitle {
-                font-size: 14px;
-                margin-bottom: 24px;
+                font-size: 13.5px;
+                margin-bottom: 20px;
                 line-height: 1.5;
             }
 
             .code-box {
-                padding: 12px;
-                margin-bottom: 20px;
+                padding: 14px;
+                margin-bottom: 16px;
             }
 
             .code-text {
@@ -440,7 +591,6 @@
 
             .step-item {
                 gap: 12px;
-                margin-bottom: 14px;
             }
 
             .step-number {
@@ -468,10 +618,9 @@
             }
         }
 
-        /* Specific styles for extra small screens (e.g. iPhone SE, screen width <= 360px) */
         @media (max-width: 360px) {
             .container {
-                padding: 24px 15px 14px 15px; /* Reduzido o padding inferior de 24px para 14px */
+                padding: 24px 15px 14px 15px;
             }
 
             .brand-logo {
@@ -484,7 +633,7 @@
             }
 
             p.subtitle {
-                font-size: 13px;
+                font-size: 12.5px;
             }
 
             .btn-copy {
@@ -496,7 +645,7 @@
 </head>
 <body>
 
-    <!-- Background glow wrapper that prevents scrollbar expansion -->
+    <!-- Background glow elements -->
     <div class="bg-glow-wrapper">
         <div class="bg-glow-1"></div>
         <div class="bg-glow-2"></div>
@@ -509,61 +658,88 @@
         </div>
 
         <h1>Pagamento via PIX</h1>
-        <p class="subtitle">Copie o código PIX abaixo para concluir o pagamento do seu plano odontológico Dental Plus de forma segura no aplicativo do seu banco.</p>
+        <p class="subtitle">Escolha a melhor opção de pagamento para concluir o faturamento do seu plano Dental Plus com segurança e praticidade.</p>
 
-        <!-- Code preview (shows snippet to user for trust) -->
-        <div class="code-box">
-            <span class="code-text" id="pixPreview">Carregando código...</span>
+        <!-- Dynamic Tabs Control -->
+        <div class="tab-container">
+            <button class="tab-btn active" id="tabBtnCopy" onclick="switchTab('copy')">Copia e Cola</button>
+            <button class="tab-btn" id="tabBtnQR" onclick="switchTab('qr')">QR Code</button>
+            <div class="tab-slider" id="tabSlider"></div>
         </div>
 
-        <!-- Copy Action Button -->
-        <button class="btn-copy pulse" id="copyBtn" onclick="copyPixCode()">
-            <!-- Copy icon -->
-            <svg id="btnIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
-            </svg>
-            <span id="btnText">Copiar Código PIX</span>
-        </button>
+        <!-- TAB 1: Copia e Cola Content -->
+        <div id="copyTabContent">
+            <div class="code-box" id="codeBox" tabindex="0" title="Clique para selecionar tudo">
+                <span class="code-text" id="pixPreview">Carregando código...</span>
+                <span class="code-hint">Clique para selecionar tudo</span>
+            </div>
+
+            <!-- Copy Action Button -->
+            <button class="btn-copy pulse" id="copyBtn" onclick="copyPixCode()">
+                <svg id="btnIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"/>
+                </svg>
+                <span id="btnText">Copiar Código PIX</span>
+            </button>
+        </div>
+
+        <!-- TAB 2: QR Code Content -->
+        <div id="qrTabContent" style="display: none;">
+            <div class="qr-box">
+                <div class="skeleton" id="qrLoading"></div>
+                <img class="qr-image" id="pixQRCode" alt="QR Code PIX">
+            </div>
+
+            <!-- Download QR Code Button -->
+            <button class="btn-copy secondary" id="downloadBtn" onclick="downloadQRCode()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                </svg>
+                <span>Baixar Imagem QR Code</span>
+            </button>
+        </div>
 
         <!-- Centered Error Message -->
         <div class="error-message" id="errorMessage">
             Nenhum código PIX válido foi encontrado no link.<br>Por favor, verifique a mensagem original.
         </div>
 
-        <!-- Como pagar com Pix Copia e Cola Section -->
+        <!-- Como pagar com Pix Section -->
         <div class="steps-container">
-            <div class="steps-title">Como pagar com Pix Copia e Cola</div>
+            <div class="steps-title">Como pagar com Pix</div>
             <div class="steps-subtitle">Rápido, seguro e sem complicações.</div>
 
-            <div class="step-item">
-                <div class="step-number">01</div>
-                <div class="step-content">
-                    <div class="step-heading">Copie o código no WhatsApp</div>
-                    <div class="step-desc">Toque e segure a mensagem com a chave e selecione a opção Copiar.</div>
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <div class="step-heading">Copie o código ou use o QR Code</div>
+                        <div class="step-desc">Selecione e copie o código acima ou alterne para a aba "QR Code" para escanear.</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="step-item">
-                <div class="step-number">02</div>
-                <div class="step-content">
-                    <div class="step-heading">Abra o app do seu banco</div>
-                    <div class="step-desc">Acesse a sua conta pelo celular como faz habitualmente.</div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <div class="step-heading">Abra o app do seu banco</div>
+                        <div class="step-desc">Acesse a sua conta pelo celular como faz habitualmente.</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="step-item">
-                <div class="step-number">03</div>
-                <div class="step-content">
-                    <div class="step-heading">Escolha "Pix Copia e Cola"</div>
-                    <div class="step-desc">Vá até a área Pix do banco e procure por essa opção específica.</div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <div class="step-heading">Escolha a opção de pagamento</div>
+                        <div class="step-desc">Vá até a área Pix do banco e selecione "Pix Copia e Cola" ou "Ler QR Code".</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="step-item">
-                <div class="step-number">04</div>
-                <div class="step-content">
-                    <div class="step-heading">Cole e finalize</div>
-                    <div class="step-desc">Cole o código copiado, confira os dados e confirme o pagamento.</div>
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <div class="step-heading">Cole o código e finalize</div>
+                        <div class="step-desc">Cole o código ou aponte a câmera, confira os dados da Dental Plus e confirme.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -574,9 +750,8 @@
     </div>
 
     <!-- Toast Notification -->
-    <div class="toast" id="toast">
+    <div class="toast" id="toast" role="alert" aria-live="polite">
         <div class="toast-icon">
-            <!-- Checkmark icon -->
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
             </svg>
@@ -596,65 +771,178 @@
             return urlParams.get(param);
         }
 
-        // Safe Base64 decoding helper
+        // Safe Base64 decoding helper (Supports Standard & URL-Safe Base64 + UTF-8)
         function decodeBase64(str) {
             try {
-                // Try decoding standard Base64
-                return atob(str.trim());
+                // Convert URL-safe base64 characters
+                let base64 = str.trim().replace(/-/g, '+').replace(/_/g, '/');
+                // Ensure proper padding
+                while (base64.length % 4) {
+                    base64 += '=';
+                }
+                const raw = atob(base64);
+                const bytes = new Uint8Array(raw.length);
+                for (let i = 0; i < raw.length; i++) {
+                    bytes[i] = raw.charCodeAt(i);
+                }
+                return new TextDecoder('utf-8').decode(bytes);
             } catch (e) {
-                // Return null if it's not a valid Base64 string
                 return null;
             }
         }
 
+        // CRC16 Checksum validation for EMV standard PIX payload
+        function calculateCRC16(data) {
+            let crc = 0xFFFF;
+            for (let i = 0; i < data.length; i++) {
+                crc ^= data.charCodeAt(i) << 8;
+                for (let j = 0; j < 8; j++) {
+                    if ((crc & 0x8000) !== 0) {
+                        crc = (crc << 1) ^ 0x1021;
+                    } else {
+                        crc = crc << 1;
+                    }
+                }
+            }
+            return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function isValidPixCode(code) {
+            if (!code || code.length < 25 || !code.startsWith("000201") || !code.includes("6304")) {
+                return false;
+            }
+            const parts = code.split("6304");
+            if (parts.length < 2) return false;
+            const dataToCalculate = parts[0] + "6304";
+            const expectedCRC = parts[1].substring(0, 4);
+            return calculateCRC16(dataToCalculate) === expectedCRC;
+        }
+
         // Initialize Page
         window.addEventListener('DOMContentLoaded', () => {
-            // Check 'k' (key) or 'code' parameter to prevent Mailrelay filters
             let paramValue = getQueryParam('k') || getQueryParam('code') || getQueryParam('pix');
             
             if (paramValue) {
                 paramValue = paramValue.trim();
-                
-                // Try to decode in case it was sent in Base64 (to obfuscate)
                 const decoded = decodeBase64(paramValue);
-                // Check if decoded value looks like a PIX key (or is simply valid)
-                if (decoded && (decoded.includes("000201") || decoded.length > 15)) {
+                
+                // Validate payload using structural and CRC16 standards
+                if (decoded && isValidPixCode(decoded)) {
                     pixCode = decoded;
-                } else {
-                    // Fallback to the raw parameter value
+                } else if (isValidPixCode(paramValue)) {
                     pixCode = paramValue;
+                } else {
+                    // Fallback to raw value if decoding fails but length looks plausible (compatibility buffer)
+                    pixCode = decoded || paramValue;
                 }
 
-                // Show formatted preview
+                // Show formatted code
                 document.getElementById('pixPreview').innerText = pixCode;
                 
-                // Attempt automatic copy on load
+                // Pre-generate QR Code in background
+                generateQRCode(pixCode);
+                
+                // Attempt automatic copy (will only succeed if browser has granted permission or in sandbox whitelist)
                 autoCopyOnLoad();
             } else {
-                // No key provided
-                document.getElementById('pixPreview').innerText = "Código não encontrado";
-                document.getElementById('copyBtn').style.opacity = "0.5";
-                document.getElementById('copyBtn').disabled = true;
-                document.getElementById('copyBtn').classList.remove('pulse');
-                
-                // Display error message
-                document.getElementById('errorMessage').style.display = "block";
+                handleNoCodeError();
             }
+
+            // Click listener for preview text selection
+            document.getElementById('codeBox').addEventListener('click', selectPreviewText);
         });
 
-        // Auto copy attempt (might be blocked by browser sandbox without user gesture)
+        function handleNoCodeError() {
+            document.getElementById('pixPreview').innerText = "Código não encontrado";
+            document.getElementById('copyBtn').style.opacity = "0.5";
+            document.getElementById('copyBtn').disabled = true;
+            document.getElementById('copyBtn').classList.remove('pulse');
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('downloadBtn').style.opacity = "0.5";
+            document.getElementById('errorMessage').style.display = "block";
+        }
+
+        // Select all text when clicking the preview area
+        function selectPreviewText() {
+            const range = document.createRange();
+            const textNode = document.getElementById('pixPreview');
+            range.selectNodeContents(textNode);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        // Generate dynamic QR Code using public API
+        function generateQRCode(code) {
+            const qrImg = document.getElementById('pixQRCode');
+            const qrLoading = document.getElementById('qrLoading');
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(code)}`;
+            
+            qrImg.src = qrUrl;
+            qrImg.onload = () => {
+                qrLoading.style.display = 'none';
+                qrImg.style.display = 'block';
+            };
+            qrImg.onerror = () => {
+                qrLoading.innerHTML = '<span style="color:#ff6b6b; font-size:12px; text-align:center;">Erro ao carregar QR Code.</span>';
+            };
+        }
+
+        // Download QR Code as PNG file
+        function downloadQRCode() {
+            if (!pixCode) return;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
+            fetch(qrUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'qrcode-pix-dentalplus.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => {
+                    // Fallback to opening in new window if blob fetch fails (e.g. CORS blocker)
+                    window.open(qrUrl, '_blank');
+                });
+        }
+
+        // Tab Switching
+        function switchTab(tab) {
+            const tabSlider = document.getElementById('tabSlider');
+            const copyContent = document.getElementById('copyTabContent');
+            const qrContent = document.getElementById('qrTabContent');
+            const tabBtnCopy = document.getElementById('tabBtnCopy');
+            const tabBtnQR = document.getElementById('tabBtnQR');
+
+            if (tab === 'qr') {
+                tabSlider.style.transform = 'translateX(100%)';
+                copyContent.style.display = 'none';
+                qrContent.style.display = 'block';
+                tabBtnQR.classList.add('active');
+                tabBtnCopy.classList.remove('active');
+            } else {
+                tabSlider.style.transform = 'translateX(0)';
+                copyContent.style.display = 'block';
+                qrContent.style.display = 'none';
+                tabBtnCopy.classList.add('active');
+                tabBtnQR.classList.remove('active');
+            }
+        }
+
+        // Auto copy attempt on load
         function autoCopyOnLoad() {
-            // Try clipboard API
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(pixCode).then(() => {
-                    // Success! Show toast automatically
                     showToast();
                     updateButtonSuccess();
                 }).catch(err => {
-                    console.log("Auto-copy blocked by browser security. Awaiting user click.");
+                    console.log("Auto-copy blocked by browser security sandbox.");
                 });
             } else {
-                // Fallback attempt
                 fallbackCopy(true);
             }
         }
@@ -675,12 +963,11 @@
             }
         }
 
-        // Fallback for older browsers or restricted sandboxes
+        // Fallback copy using text-area selection
         function fallbackCopy(isAutoCopyAttempt) {
             try {
                 const textarea = document.createElement("textarea");
                 textarea.value = pixCode;
-                // Avoid scrolling to bottom
                 textarea.style.top = "0";
                 textarea.style.left = "0";
                 textarea.style.position = "fixed";
@@ -715,11 +1002,8 @@
             btn.classList.remove('pulse');
             btn.classList.add('success');
             btnText.innerText = "Código Copiado!";
-            
-            // Checkmark SVG inside button
             btnIcon.innerHTML = '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>';
 
-            // Reset button after 4 seconds
             setTimeout(() => {
                 btn.classList.remove('success');
                 btn.classList.add('pulse');
@@ -733,7 +1017,6 @@
             const toast = document.getElementById('toast');
             toast.classList.add('show');
             
-            // Auto hide toast after 6 seconds
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 6000);
