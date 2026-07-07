@@ -341,25 +341,6 @@
             margin: 0 auto 20px auto;
         }
 
-        /* The scanner line */
-        .scanner-line {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, rgba(50, 188, 173, 0) 0%, rgba(50, 188, 173, 1) 50%, rgba(50, 188, 173, 0) 100%);
-            box-shadow: 0 0 8px rgba(50, 188, 173, 0.85);
-            animation: scanAnimation 2.5s linear infinite;
-            z-index: 5;
-        }
-
-        @keyframes scanAnimation {
-            0% { top: 0%; opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
         .qr-image-container {
             width: 180px;
             height: 180px;
@@ -737,8 +718,6 @@
         <div id="qrTabContent" style="display: none;">
             <div class="qr-content-wrapper">
                 <div class="qr-card">
-                    <!-- Scanner Line -->
-                    <div class="scanner-line"></div>
                     <div class="qr-image-container" id="pixQRCode"></div>
                 </div>
                 <div class="qr-status-text">
@@ -902,10 +881,8 @@
                     correctLevel : QRCode.CorrectLevel.M
                 });
 
-                // Device detection for default tab
-                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                const defaultTab = isMobile ? 'copy' : 'qr';
-                switchTab(defaultTab);
+                // Always open "Pix Copia e Cola" as the default tab on all devices
+                switchTab('copy');
                 
                 // Attempt automatic copy on load
                 autoCopyOnLoad();
