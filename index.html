@@ -18,8 +18,9 @@
             --bg-gradient: linear-gradient(135deg, #03143c 0%, #010617 100%);
             --card-bg: rgba(255, 255, 255, 0.02);
             --card-border: rgba(255, 255, 255, 0.06);
-            --pix-color: #0091ff; /* Azul/Ciano da Dental Plus */
-            --pix-hover: #007adb;
+            --pix-color: #0066ff; /* Azul Royal da Dental Plus */
+            --pix-cyan: #00d2ff;  /* Ciano Elétrico */
+            --pix-hover: #0052cc;
             --text-primary: #ffffff;
             --text-secondary: #a2b2c8;
             --success-color: #38a169;
@@ -64,7 +65,7 @@
             width: 450px;
             height: 450px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 145, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(0, 102, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
             top: -100px;
             left: -100px;
             pointer-events: none;
@@ -101,8 +102,8 @@
         }
 
         .container:hover {
-            border-color: rgba(0, 145, 255, 0.15);
-            box-shadow: 0 30px 60px rgba(0, 145, 255, 0.05), 0 15px 35px rgba(0, 0, 0, 0.55);
+            border-color: rgba(0, 102, 255, 0.15);
+            box-shadow: 0 30px 60px rgba(0, 102, 255, 0.05), 0 15px 35px rgba(0, 0, 0, 0.55);
             transform: translateY(-2px);
         }
 
@@ -113,7 +114,7 @@
             inset: 0;
             border-radius: 24px;
             padding: 1px;
-            background: linear-gradient(135deg, rgba(0, 145, 255, 0.3) 0%, rgba(50, 188, 173, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.3) 0%, rgba(0, 210, 255, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -146,13 +147,13 @@
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--pix-color);
-            box-shadow: 0 0 25px rgba(0, 145, 255, 0.35);
+            box-shadow: 0 0 25px rgba(0, 102, 255, 0.35);
             animation: pulseLogo 3s infinite ease-in-out;
         }
 
         @keyframes pulseLogo {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 145, 255, 0.35); }
-            50% { transform: scale(1.04); box-shadow: 0 0 40px rgba(0, 145, 255, 0.65); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 102, 255, 0.35); }
+            50% { transform: scale(1.04); box-shadow: 0 0 40px rgba(0, 102, 255, 0.65); }
         }
 
         /* Typography */
@@ -208,11 +209,11 @@
             left: 4px;
             width: calc(50% - 4px);
             height: calc(100% - 8px);
-            background: linear-gradient(135deg, var(--pix-color) 0%, #32bcad 100%);
+            background: linear-gradient(135deg, var(--pix-color) 0%, var(--pix-cyan) 100%);
             border-radius: 8px;
             z-index: 1;
             transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 4px 15px rgba(0, 145, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
         }
 
         /* Code Preview Area (Scrollable, full selectable, no ellipsis) */
@@ -236,7 +237,7 @@
         }
 
         .code-box:hover {
-            border-color: rgba(0, 145, 255, 0.3);
+            border-color: rgba(0, 102, 255, 0.3);
         }
 
         /* Custom Scrollbar for Code Box */
@@ -252,7 +253,7 @@
             border-radius: 3px;
         }
         .code-box::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 145, 255, 0.4);
+            background: rgba(0, 102, 255, 0.4);
         }
 
         .code-text {
@@ -281,14 +282,14 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 6px 20px rgba(0, 145, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 102, 255, 0.3);
             position: relative;
             overflow: hidden;
         }
 
         .btn-copy:active {
             transform: scale(0.98);
-            box-shadow: 0 4px 10px rgba(0, 145, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 102, 255, 0.2);
         }
 
         /* Pulsing hint icon on load if not copied */
@@ -297,9 +298,9 @@
         }
 
         @keyframes buttonPulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 145, 255, 0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 145, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 145, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 102, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0); }
         }
 
         /* Success button state */
@@ -405,7 +406,7 @@
 
         @media (hover: hover) {
             .step-item:hover {
-                border-color: rgba(0, 145, 255, 0.15);
+                border-color: rgba(0, 102, 255, 0.15);
                 transform: translateX(4px);
             }
         }
@@ -415,8 +416,8 @@
             font-size: 13px;
             font-weight: 800;
             color: var(--pix-color);
-            background: rgba(0, 145, 255, 0.1);
-            border: 1px solid rgba(0, 145, 255, 0.2);
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.2);
             border-radius: 50%;
             width: 28px;
             height: 28px;
@@ -551,7 +552,7 @@
         .code-box:focus-visible {
             outline: 3px solid var(--pix-color) !important;
             outline-offset: 4px !important;
-            box-shadow: 0 0 14px rgba(0, 145, 255, 0.7) !important;
+            box-shadow: 0 0 14px rgba(0, 102, 255, 0.7) !important;
         }
         
         button:focus,
@@ -564,7 +565,7 @@
             .btn-copy:hover {
                 background: var(--pix-hover);
                 transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 145, 255, 0.45);
+                box-shadow: 0 8px 25px rgba(0, 102, 255, 0.45);
             }
             .btn-copy:hover svg {
                 transform: scale(1.1);
@@ -951,7 +952,7 @@
             const buttonCenterX = rect.left + rect.width / 2;
             const buttonCenterY = rect.top + rect.height / 2;
 
-            const colors = ['#0091ff', '#32bcad', '#ffffff', '#00ffd5'];
+            const colors = ['#0066ff', '#00d2ff', '#ffffff', '#00a3ff'];
             const container = document.body;
 
             for (let i = 0; i < 40; i++) {
