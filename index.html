@@ -133,27 +133,35 @@
             }
         }
 
-        /* Brand Logo Container */
+        /* Transparent Logo Container with subtle scale on hover */
         .logo-container {
-            margin-bottom: 20px;
-            display: flex;
+            margin-bottom: 32px;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
         }
 
         .brand-logo {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--pix-color);
-            box-shadow: 0 0 25px rgba(0, 102, 255, 0.35);
-            animation: pulseLogo 3s infinite ease-in-out;
+            height: 58px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+            filter: brightness(0) invert(1); /* Turns logo pure white for premium high-contrast dark mode */
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes pulseLogo {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 102, 255, 0.35); }
-            50% { transform: scale(1.04); box-shadow: 0 0 40px rgba(0, 102, 255, 0.65); }
+        .logo-container:hover .brand-logo {
+            opacity: 1;
         }
 
         /* Typography */
@@ -580,9 +588,12 @@
                 margin: 10px;
             }
 
+            .logo-container {
+                margin-bottom: 24px;
+            }
+
             .brand-logo {
-                width: 110px;
-                height: 110px;
+                height: 48px;
             }
 
             h1 {
@@ -655,9 +666,12 @@
                 padding: 24px 15px 14px 15px;
             }
 
+            .logo-container {
+                margin-bottom: 20px;
+            }
+
             .brand-logo {
-                width: 90px;
-                height: 90px;
+                height: 40px;
             }
 
             h1 {
@@ -684,9 +698,9 @@
     </div>
 
     <div class="container">
-        <!-- Dental Plus Circular Brand Logo -->
+        <!-- Dental Plus Transparent Brand Logo -->
         <div class="logo-container">
-            <img class="brand-logo" src="logo.jpg" alt="Dental Plus Plano Odontológico">
+            <img class="brand-logo" src="logo.png" alt="Dental Plus Plano Odontológico">
         </div>
 
         <h1>Pagamento via PIX</h1>
