@@ -172,6 +172,48 @@
             margin-bottom: 24px;
         }
 
+        /* Payment Summary Card (Cliente / Valor / Vencimento) */
+        .payment-summary {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .summary-row {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 0;
+            gap: 12px;
+        }
+
+        .summary-row + .summary-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            font-size: 14.5px;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .summary-value-highlight {
+            color: var(--pix-cyan);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+        }
+
         /* Tab Switcher (Segmented Control) */
         .tab-container {
             display: flex;
@@ -690,7 +732,23 @@
         </div>
 
         <h1>Pagamento via PIX</h1>
-        <p class="subtitle">Escolha a melhor opção de pagamento para concluir o faturamento do seu plano odontológico Dental Plus com segurança e praticidade.</p>
+        <p class="subtitle" id="subtitleText">Escolha a melhor opção de pagamento para concluir o faturamento do seu plano odontológico Dental Plus com segurança e praticidade.</p>
+
+        <!-- Payment Summary Card: populated dynamically via URL params (nome, valor, venc) -->
+        <div class="payment-summary" id="paymentSummary" style="display: none;">
+            <div class="summary-row" id="summaryNomeRow">
+                <span class="summary-label">Cliente</span>
+                <span class="summary-value" id="summaryNome"></span>
+            </div>
+            <div class="summary-row" id="summaryValorRow">
+                <span class="summary-label">Valor</span>
+                <span class="summary-value summary-value-highlight" id="summaryValor"></span>
+            </div>
+            <div class="summary-row" id="summaryVencRow">
+                <span class="summary-label">Vencimento</span>
+                <span class="summary-value" id="summaryVenc"></span>
+            </div>
+        </div>
 
         <!-- Segmented Tab Control -->
         <div class="tab-container" id="tabContainer">
@@ -835,6 +893,76 @@
             return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
         }
 
+        // Formats a raw numeric string ("89.9", "89,90", "8990") into "R$ 89,90"
+        // NOTE: This value is DISPLAY ONLY. For PIX "cobv" (cobrança dinâmica) links,
+        // like the Sicredi ones used here, the real amount charged is resolved by the
+        // bank/app when the code is read — it is NOT encoded inside the PIX payload.
+        // So this must always match what's configured on the Sicredi charge itself.
+        function formatCurrencyBRL(raw) {
+            if (!raw) return null;
+            // Accepts "89.90", "89,90", "1.234,56" or plain "8990" (cents-less integer)
+            const cleaned = raw.trim().replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+            const value = parseFloat(cleaned);
+            if (isNaN(value)) return null;
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Accepts ISO (yyyy-mm-dd) or already-formatted (dd/mm/yyyy) dates
+        function formatDateBR(raw) {
+            if (!raw) return null;
+            const value = raw.trim();
+            if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
+            const isoMatch = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
+            if (isoMatch) return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
+            return value; // fallback: show whatever was provided
+        }
+
+        // Populates the Cliente / Valor / Vencimento summary card from URL params.
+        // Params: nome, valor, venc (or vencimento). All optional and independent —
+        // the card only shows the rows that were actually provided.
+        function populatePaymentSummary() {
+            const nome = getQueryParam('nome');
+            const valorRaw = getQueryParam('valor');
+            const vencRaw = getQueryParam('venc') || getQueryParam('vencimento');
+
+            let hasAnyField = false;
+
+            if (nome) {
+                const nomeClean = nome.trim();
+                document.getElementById('summaryNome').innerText = nomeClean;
+                document.getElementById('summaryNomeRow').style.display = 'flex';
+                hasAnyField = true;
+
+                const firstName = nomeClean.split(' ')[0];
+                const subtitleEl = document.getElementById('subtitleText');
+                if (subtitleEl) {
+                    subtitleEl.innerHTML = `Olá, <strong>${firstName}</strong>! Escolha a melhor opção de pagamento para concluir o faturamento do seu plano odontológico Dental Plus com segurança e praticidade.`;
+                }
+            }
+
+            if (valorRaw) {
+                const formatted = formatCurrencyBRL(valorRaw);
+                if (formatted) {
+                    document.getElementById('summaryValor').innerText = formatted;
+                    document.getElementById('summaryValorRow').style.display = 'flex';
+                    hasAnyField = true;
+                }
+            }
+
+            if (vencRaw) {
+                const formatted = formatDateBR(vencRaw);
+                if (formatted) {
+                    document.getElementById('summaryVenc').innerText = formatted;
+                    document.getElementById('summaryVencRow').style.display = 'flex';
+                    hasAnyField = true;
+                }
+            }
+
+            if (hasAnyField) {
+                document.getElementById('paymentSummary').style.display = 'block';
+            }
+        }
+
         function isValidPixCode(code) {
             if (!code || code.length < 25 || !code.startsWith("000201")) {
                 return false;
@@ -851,6 +979,8 @@
 
         // Initialize Page
         window.addEventListener('DOMContentLoaded', () => {
+            populatePaymentSummary();
+
             let paramValue = getQueryParam('k') || getQueryParam('code') || getQueryParam('pix');
             
             let isCodeValid = false;
